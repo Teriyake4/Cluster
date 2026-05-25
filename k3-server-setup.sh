@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/bin/sh
 set -euo pipefail
 
 USER=cluster
@@ -57,6 +57,7 @@ echo "Deploying SSH public key"
 mkdir -p "/home/$USER/.ssh"
 echo "$SSH_KEY" > "/home/$USER/.ssh/authorized_keys"
 chmod 600 "/home/$USER/.ssh/authorized_keys"
+chown -R "$USER:$USER" ~/.ssh
 
 # ACPID setup
 echo "Installing and cofiguring ACPID"
@@ -84,6 +85,9 @@ if ! grep -q "cgroup_memory=1" /etc/default/grub; then
     sed -i "s/^GRUB_CMDLINE_LINUX_DEFAULT=\"/GRUB_CMDLINE_LINUX_DEFAULT=\"$CGROUP_PARAMS /" /etc/default/grub
     grub-mkconfig -o /boot/grub/grub.cfg
 fi
+
+# Install btop for fun
+apk add btop
 
 echo "Completed Alpine Linux setup"
 

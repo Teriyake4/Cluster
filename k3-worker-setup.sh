@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/bin/sh
 set -euo pipefail
 
 USER=cluster
@@ -31,7 +31,7 @@ if [[ -z "${K3S_HOSTNAME}" ]]; then
     echo "Error: K3S_HOSTNAME not found in $ENV_FILE"
     exit 1
 fi
-if [[-z "${K3S_NODE_TOKEN}" ]]; then
+if [[ -z "${K3S_NODE_TOKEN}" ]]; then
     echo "Error: K3S_NODE_TOKEN not found in $ENV_FILE"
     exit 1
 fi
@@ -65,6 +65,7 @@ echo "Deploying SSH public key"
 mkdir -p "/home/$USER/.ssh"
 echo "$SSH_KEY" > "/home/$USER/.ssh/authorized_keys"
 chmod 600 "/home/$USER/.ssh/authorized_keys"
+chown -R "$USER:$USER" ~/.ssh
 
 # ACPID setup
 echo "Installing and cofiguring ACPID"
