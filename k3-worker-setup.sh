@@ -27,8 +27,8 @@ if [[-z "${TAILSCALE_AUTH_KEY}" ]]; then
     echo "Error: TAILSCALE_AUTH_KEY not found in $ENV_FILE"
     exit 1
 fi
-if [[ -z "${K3S_HOSTNAME}" ]]; then
-    echo "Error: K3S_HOSTNAME not found in $ENV_FILE"
+if [[ -z "${K3S_SERVER_IP}" ]]; then
+    echo "Error: K3S_SERVER_IP not found in $ENV_FILE"
     exit 1
 fi
 if [[ -z "${K3S_NODE_TOKEN}" ]]; then
@@ -65,7 +65,7 @@ echo "Deploying SSH public key"
 mkdir -p "/home/$USER/.ssh"
 echo "$SSH_KEY" > "/home/$USER/.ssh/authorized_keys"
 chmod 600 "/home/$USER/.ssh/authorized_keys"
-chown -R "$USER:$USER" ~/.ssh
+chown -R "$USER:$USER" "/home/$USER/.ssh"
 
 # ACPID setup
 echo "Installing and cofiguring ACPID"
@@ -94,11 +94,16 @@ if ! grep -q "cgroup_memory=1" /etc/default/grub; then
     grub-mkconfig -o /boot/grub/grub.cfg
 fi
 
+# Install btop and fastfetch for fun
+apk add btop fastfetch
+echo "fastfetch" >> "/home/$USER/.profile"
+sh -c "> /etc/motd"
+
 echo "Completed Alpine Linux setup"
 
 # Install k3s as worker
 echo "Installing k3s as worker"
-curl -sfL https://get.k3s.io | K3S_URL="https://$K3S_HOSTNAME:6443" \
+curl -sfL https://get.k3s.io | K3S_URL="https://$K3S_SERVER_IP:6443" \
     sh -s - agent \
     --token "$K3S_NODE_TOKEN"
 rc-update add k3s-agent default
