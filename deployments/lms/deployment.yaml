@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: lms
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: lms
+  template:
+    metadata:
+      labels:
+        app: lms
+    spec:
+      containers:
+        - name: lms
+          image: registry.local/lms:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 1234
+          resources:
+            requests:
+              memory: "5Gi"
+            limits:
+              memory: "8Gi"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: lms
+spec:
+  selector:
+    app: lms
+  ports:
+    - port: 1234
+      targetPort: 1234
+  type: ClusterIP

@@ -1,0 +1,24 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: active-quant-agent
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: active-quant-agent
+  template:
+    metadata:
+      labels:
+        app: active-quant-agent
+    spec:
+      containers:
+        - name: active-quant-agent
+          image: registry.local/active-quant-agent:latest
+          imagePullPolicy: Always
+          envFrom:
+            - secretRef:
+                name: active-quant-agent-env
+          env:
+            - name: LMS_BASE_URL
+              value: "http://lms:1234"
