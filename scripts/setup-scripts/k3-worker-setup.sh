@@ -4,12 +4,15 @@ set -euo pipefail
 USER=cluster
 
 if [[ $EUID -ne 0 ]]; then
-    echo "Error: Run this script as root (sudo or direct)"
+    echo "Error: Run this script as root (doas or direct with su -)"
     exit 1
 fi
 
 chmod +x setup-base.sh
 ./setup-base.sh
+
+# Rexecute as bash
+exec bash "$0" "$@"
 
 ENV_FILE=".env"
 if [[ ! -f "$ENV_FILE" ]]; then

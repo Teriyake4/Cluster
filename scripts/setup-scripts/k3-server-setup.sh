@@ -11,6 +11,9 @@ fi
 chmod +x setup-base.sh
 ./setup-base.sh
 
+# Rexecute as bash
+exec bash "$0" "$@"
+
 ENV_FILE=".env"
 if [[ ! -f "$ENV_FILE" ]]; then
     echo "Error: .env file not found."
@@ -26,21 +29,22 @@ if [[ -z "${K3S_SERVER_IP}" ]]; then
     echo "Error: K3S_SERVER_IP not found in $ENV_FILE"
     exit 1
 fi
-if [[ -z "${K3S_NODE_TOKEN}" ]]; then
-    echo "Error: K3S_NODE_TOKEN not found in $ENV_FILE"
-    exit 1
-fi
 
-# Install k3s as worker
-echo "Installing k3s as server and worker"
-curl -sfL https://get.k3s.io | K3S_TOKEN="$K3S_NODE_TOKEN" \
-    K3S_NODE_TAINT="node-role.kubernetes.io/control-plane:NoSchedule-" \
-    sh -s - server \
-    --server "https://$K3S_SERVER_IP:6443"
+# Install k3s as server
+echo "Installing k3s as server"
+curl -sfL https://get.k3s.io | sh -s - server --cluster-init --disable-agent
 rc-update add k3s default
 rc-service k3s start
+
+echo "tls-san:" >> /etc/rancher/k3s/config.yaml
+echo " - $K3S_SERVER_IP" >> /etc/rancher/k3s/config.yaml
+
+rc-service k3s restart
 
 # Enable kubectl for normal users
 chown "$USER:$USER" "/etc/rancher/k3s/k3s.yaml"
 
-echo "k3 server and worker setup is complete"
+echo "k3 server setup is complete"
+echo "Verify k3s by running: kubectl get nodes"
+echo "k3s node token: $(cat /var/lib/rancher/k3s/server/node-token)"
+echo "Or run the following command to get the token: cat /var/lib/rancher/k3s/server/node-token"

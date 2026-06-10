@@ -1,6 +1,17 @@
 #!/bin/sh
 set -euo pipefail
 
+if [ -z "$BASH_VERSION" ]; then
+    echo "Running in basic sh. Checking for bash..."
+    # Check if bash is installed, install if missing
+    if ! command -v bash >/dev/null 2>&1; then
+        echo "Installing bash..."
+        apk add bash
+    fi
+    # Rexecuting in bash
+    exec bash "$0" "$@"
+fi
+
 USER=cluster
 
 ENV_FILE=".env"
@@ -38,7 +49,7 @@ apk update
 
 # doas setup
 echo "Configuring doas"
-adduser cluster wheel
+adduser "$USER" wheel
 # Passwordless doas for wheel group
 echo "permit nopass :wheel" >> /etc/doas.d/*.conf
 
