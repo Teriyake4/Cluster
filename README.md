@@ -1,6 +1,7 @@
 # Cluster
 
 K3s cluster running on Alpine Linux with heterogeneous nodes configured for high availability.
+
 ## Additional Setup
 
 Edit `/etc/rancher/k3s/config.yaml`
@@ -26,42 +27,37 @@ flannel-iface: eth0
 
 ## Building and Deploying
 
-### Building (on development machine)
+### Building
 
 ```sh
-docker buildx build --platform linux/amd64 -t REGISTRY_IP:30500/APP_NAME:latest --push .
+# Build
+docker build --platform linux/amd64 -t APP_NAME:latest .
+# Tag
+docker tag APP_NAME:latest REGISTRY_IP:30500/APP_NAME
+# Push
+docker push REGISTRY_IP:30500/APP_NAME:latest
 ```
 
-Applying secrets (on development machine)
+One line
+```sh
+docker build --platform linux.amd64 -t REGISTRY_IP:30500/APP_NAME:latest --push .
+```
+
+### Deploying
+
+Create `deployment.yaml` and `kustimization.yaml` for `dev` and `prod`.
+
+Deploying locally
+```sh
+kubectl apply -k APP_NAME/overlays/dev
+```
+
+Deploying production
+```sh
+kubectl apply -k APP_NAME/overlays/prod
+```
+
+Applying secrets
 ```sh
 kubectl create secret generic SECRET_NAME --from-env-file=.env
-```
-
-### Deploying (on cluster)
-
-Add `deployment.yaml` to `deployments` dir.
-Sample `deployment.yaml`:
-```yaml
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: APP_NAME
-spec:
-  replicas: 1
-  selector:
-    matchLabels:
-      app: APP_NAME
-  template:
-    metadata:
-      labels:
-        app: APP_NAME
-    spec:
-      containers:
-      - name: APP_NAME
-        image: registry.local/APP_NAME:latest
-        imagePullPolicy: Always
-```
-Deploy Image
-```sh
-kubectl apply -f deployment.yaml
 ```
