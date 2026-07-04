@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: lms
+spec:
+  selector:
+    app: lms
+  ports:
+    - port: 1234
+      targetPort: 1234
+  type: ClusterIP

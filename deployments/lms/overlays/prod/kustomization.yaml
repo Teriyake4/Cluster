@@ -1,0 +1,21 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+  - ../../base
+images:
+  - name: lms
+    newName: registry.local/lms
+    newTag: "latest"
+patches:
+  - patch: |-
+      apiVersion: apps/v1
+      kind: Deployment
+      metadata:
+        name: lms
+      spec:
+        replicas: 2
+        template:
+          spec:
+            containers:
+              - name: lms
+                imagePullPolicy: Always

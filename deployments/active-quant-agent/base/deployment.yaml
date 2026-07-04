@@ -14,11 +14,7 @@ spec:
     spec:
       containers:
         - name: active-quant-agent
-          image: registry.local/active-quant-agent:latest
-          imagePullPolicy: Always
+          image: active-quant-agent:latest
           envFrom:
             - secretRef:
                 name: active-quant-agent-env
-          env:
-            - name: LMS_BASE_URL
-              value: "http://lms:1234"
