@@ -59,5 +59,5 @@ kubectl apply -k APP_NAME/overlays/prod
 
 Applying secrets
 ```sh
-kubectl create secret generic SECRET_NAME --from-env-file=.env
+kubectl create secret generic SECRET_NAME --from-env-file=.env -n NAMESPACE
 ```
