@@ -1,0 +1,109 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+  - ../../base
+patches:
+  - target:
+      kind: HelmChart
+      name: open-webui
+    patch: |-
+      apiVersion: helm.cattle.io/v1
+      kind: HelmChart
+      metadata:
+        name: open-webui
+      spec:
+        valuesContent: |-
+          replicaCount: 1
+          resources:
+            limits:
+              cpu: "2000m"
+              memory: "2Gi"
+          persistence:
+            enabled: true
+            size: 2Gi
+          ingress:
+            enabled: true
+            ingressClassName: traefik
+            hosts:
+              - host: dev.webui.cluster.local
+                paths:
+                  - path: /
+                    pathType: Prefix
+          ollama:
+            enabled: false
+          extraEnvVars:
+            - name: WEBUI_AUTH
+              value: "false"
+            - name: ENABLE_OLLAMA_API
+              value: "false"
+            - name: ENABLE_MEMORY_BACKGROUND_REVIEW
+              value: "true"
+            - name: OFFLINE_MODE
+              value: "false"
+            - name: ENABLE_KB_EXEC
+              value: "true"
+            - name: ENABLE_RAG_HYBRID_SEARCH_ENRICHED_TEXTS
+              value: "true"
+            - name: PDF_EXTRACT_IMAGES
+              value: "true"
+            - name: ENABLE_QUERIES_CACHE
+              value: "true"
+            - name: RAG_SYSTEM_CONTEXT
+              value: "true"
+            - name: ENABLE_RAG_LOCAL_WEB_FETCH
+              value: "true"
+            - name: ENABLE_ONEDRIVE_INTEGRATION
+              value: "true"
+            - name: ENABLE_WEB_SEARCH
+              value: "true"
+            - name: WEB_SEARCH_CONCURRENT_REQUESTS
+              value: "1"
+            - name: WEB_SEARCH_ENGINE
+              value: "brave"
+            - name: WEB_LOADER_ENGINE
+              value: "safe_web"
+            - name: USER_PERMISSIONS_FEATURES_AUTOMATIONS
+              value: "true"
+            - name: USER_PERMISSIONS_WORKSPACE_MODELS_ACCESS
+              value: "true"
+            - name: USER_PERMISSIONS_WORKSPACE_KNOWLEDGE_ACCESS
+              value: "true"
+            - name: USER_PERMISSIONS_WORKSPACE_PROMPTS_ACCESS
+              value: "true"
+            - name: USER_PERMISSIONS_WORKSPACE_TOOLS_ACCESS
+              value: "true"
+            - name: USER_PERMISSIONS_WORKSPACE_SKILLS_ACCESS
+              value: "true"
+            - name: USER_PERMISSIONS_WORKSPACE_SKILLS_IMPORT
+              value: "true"
+            - name: USER_PERMISSIONS_WORKSPACE_SKILLS_EXPORT
+              value: "true"
+            - name: USER_PERMISSIONS_WORKSPACE_MODELS_ALLOW_SHARING
+              value: "true"
+            - name: USER_PERMISSIONS_WORKSPACE_KNOWLEDGE_ALLOW_SHARING
+              value: "true"
+            - name: USER_PERMISSIONS_WORKSPACE_PROMPTS_ALLOW_SHARING
+              value: "true"
+            - name: USER_PERMISSIONS_WORKSPACE_TOOLS_ALLOW_SHARING
+              value: "true"
+            - name: USER_PERMISSIONS_WORKSPACE_SKILLS_ALLOW_SHARING
+              value: "true"
+            - name: USER_PERMISSIONS_WORKSPACE_NOTES_ALLOW_SHARING
+              value: "true"
+            - name: USER_PERMISSIONS_WORKSPACE_FOLDERS_ALLOW_SHARING
+              value: "true"
+            - name: OPENAI_API_BASE_URL
+              valueFrom:
+                secretKeyRef:
+                  name: open-webui-secrets
+                  key: OPENAI_API_BASE_URL
+            - name: OPENAI_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: open-webui-secrets
+                  key: OPENAI_API_KEY
+            - name: ONEDRIVE_CLIENT_ID_PERSONAL
+              valueFrom:
+                secretKeyRef:
+                  name: open-webui-secrets
+                  key: ONEDRIVE_CLIENT_ID_PERSONAL
