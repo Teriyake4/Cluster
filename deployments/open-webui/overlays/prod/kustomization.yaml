@@ -26,13 +26,16 @@ patches:
             enabled: true
             size: 20Gi
           ingress:
-            enabled: true
+            enabled: false
             ingressClassName: traefik
             hosts:
-              - host: webui.cluster
+              - host: ""
                 paths:
                   - path: /
                     pathType: Prefix
+          service:
+            type: LoadBalancer
+            port: 8080
           ollama:
             enabled: false
           extraEnvVars:
