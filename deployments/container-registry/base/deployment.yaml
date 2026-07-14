@@ -1,21 +1,3 @@
-apiVersion: v1
-kind: Namespace
-metadata:
-  name: container-registry
----
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: registry-data
-  namespace: container-registry
-spec:
-  accessModes:
-    - ReadWriteOnce
-  storageClassName: local-path
-  resources:
-    requests:
-      storage: 128Gi
----
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -48,17 +30,3 @@ spec:
       - name: data
         persistentVolumeClaim:
           claimName: registry-data
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: registry
-  namespace: container-registry
-spec:
-  type: NodePort
-  selector:
-    app: registry
-  ports:
-  - port: 5000
-    targetPort: 5000
-    nodePort: 30500
