@@ -7,6 +7,7 @@ patches:
   - target:
       kind: HelmChart
       name: open-webui
+      namespace: open-webui
     patch: |-
       apiVersion: helm.cattle.io/v1
       kind: HelmChart
