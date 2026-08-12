@@ -1,7 +1,7 @@
 #!/bin/sh
 set -euo pipefail
 
-if [ -z "$BASH_VERSION" ]; then
+if [ -z "${BASH_VERSION:-}" ]; then
     echo "Running in basic sh. Checking for bash..."
     # Check if bash is installed, install if missing
     if ! command -v bash >/dev/null 2>&1; then
@@ -51,7 +51,7 @@ apk update
 echo "Configuring doas"
 adduser "$USER" wheel
 # Passwordless doas for wheel group
-echo "permit nopass :wheel" >> /etc/doas.d/*.conf
+echo "permit nopass :wheel" >> /etc/doas.d/doas.conf
 
 # Tailscale setup
 echo "Installing and configuring Tailscale"

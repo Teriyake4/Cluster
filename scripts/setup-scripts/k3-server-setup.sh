@@ -36,9 +36,6 @@ curl -sfL https://get.k3s.io | sh -s - server --cluster-init --disable-agent
 rc-update add k3s default
 rc-service k3s start
 
-echo "tls-san:" >> /etc/rancher/k3s/config.yaml
-echo " - $K3S_SERVER_IP" >> /etc/rancher/k3s/config.yaml
-
 rc-service k3s restart
 
 # Enable kubectl for normal users
