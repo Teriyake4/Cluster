@@ -1,6 +1,6 @@
-# Cluster
+# El Matcha
 
-K3s cluster running on Alpine Linux with heterogeneous nodes configured for high availability.
+K3s cluster running on Alpine Linux with heterogeneous nodes configured for high availability. Unoffically named El Matcha.
 
 ## Additional Setup
 
