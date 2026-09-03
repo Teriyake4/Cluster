@@ -36,6 +36,32 @@ if [[ -z "${K3S_NODE_TOKEN}" ]]; then
     exit 1
 fi
 
+# Setup Longhorn
+echo "Setting up Longhorn"
+cat << 'EOF' | doas tee /etc/local.d/longhorn-mounts.start > /dev/null
+#!/bin/sh
+
+mkdir -p /var/lib/longhorn
+
+if ! mountpoint -q /var/lib/longhorn; then
+    mount --bind /var/lib/longhorn /var/lib/longhorn
+fi
+
+mount --make-shared /var/lib/longhorn
+
+if mountpoint -q /mnt/ssd-storage; then
+    mount --make-shared /mnt/ssd-storage
+fi
+
+if mountpoint -q /mnt/hdd-storage; then
+    mount --make-shared /mnt/hdd-storage
+fi
+EOF
+
+doas chmod +x /etc/local.d/longhorn-mounts.start
+doas rc-update add local default
+doas /etc/local.d/longhorn-mounts.start
+
 # Install k3s as worker
 echo "Installing k3s as worker"
 curl -sfL https://get.k3s.io | K3S_URL="https://$K3S_SERVER_IP:6443" \

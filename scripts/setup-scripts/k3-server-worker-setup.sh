@@ -24,6 +24,32 @@ set -a
 source "$ENV_FILE"
 set +a
 
+# Setup Longhorn
+echo "Setting up Longhorn"
+cat << 'EOF' | doas tee /etc/local.d/longhorn-mounts.start > /dev/null
+#!/bin/sh
+
+mkdir -p /var/lib/longhorn
+
+if ! mountpoint -q /var/lib/longhorn; then
+    mount --bind /var/lib/longhorn /var/lib/longhorn
+fi
+
+mount --make-shared /var/lib/longhorn
+
+if mountpoint -q /mnt/ssd-storage; then
+    mount --make-shared /mnt/ssd-storage
+fi
+
+if mountpoint -q /mnt/hdd-storage; then
+    mount --make-shared /mnt/hdd-storage
+fi
+EOF
+
+doas chmod +x /etc/local.d/longhorn-mounts.start
+doas rc-update add local default
+doas /etc/local.d/longhorn-mounts.start
+
 # Validate keys
 if [[ -z "${K3S_SERVER_IP}" ]]; then
     echo "Error: K3S_SERVER_IP not found in $ENV_FILE"

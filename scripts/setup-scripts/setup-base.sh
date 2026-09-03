@@ -83,8 +83,8 @@ sed -i '/^        power-supply-ac || suspend/s/^/# /' /etc/acpi/handler.sh
 rc-service acpid restart
 
 # General package installation for k3s
-echo "Installing iptables, cni-plugins, and curl"
-apk add iptables cni-plugins curl
+echo "Installing packages"
+apk add iptables cni-plugins curl bash
 
 # Turn off swap
 echo "Disabling swap"
@@ -105,6 +105,9 @@ fi
 apk add btop fastfetch
 echo "fastfetch" >> "/home/$USER/.profile"
 sh -c "> /etc/motd"
+
+# Setup for Longhorn
+apk add findmnt grep blkid open-iscsi
 
 # Configure for local registry
 mkdir -p /etc/rancher/k3s
