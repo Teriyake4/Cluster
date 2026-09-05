@@ -1,6 +1,13 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 namespace: open-webui
+generatorOptions:
+  disableNameSuffixHash: true
+secretGenerator:
+- name: open-webui-secrets
+  envs:
+  - .env
+  type: Opaque
 resources:
   - ../../base
 patches:
