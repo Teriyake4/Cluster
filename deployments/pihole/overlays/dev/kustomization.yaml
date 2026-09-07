@@ -1,0 +1,21 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: pihole
+resources:
+  - ../../base
+patches:
+  - target:
+      kind: PersistentVolumeClaim
+      name: pihole-etc
+    patch: |-
+      - op: replace
+        path: /spec/resources/requests/storage
+        value: 250Mi
+secretGenerator:
+  - name: pihole-secrets
+    envs:
+      - .env
+configMapGenerator:
+  - name: pihole-custom-hosts
+    files:
+      - custom.list

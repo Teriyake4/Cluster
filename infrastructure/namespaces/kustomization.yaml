@@ -4,3 +4,4 @@ resources:
   - container-registry.yaml
   - longhorn.yaml
   - open-webui.yaml
+  - pihole.yaml

@@ -1,0 +1,82 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: pihole
+  namespace: pihole
+  labels:
+    app: pihole
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: pihole
+  template:
+    metadata:
+      labels:
+        app: pihole
+    spec:
+      containers:
+        - name: pihole
+          image: pihole/pihole:2026.07.2
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 53
+              protocol: UDP
+              name: dns-udp
+            - containerPort: 53
+              protocol: TCP
+              name: dns-tcp
+            - containerPort: 80
+              protocol: TCP
+              name: web
+          env:
+            - name: TZ
+              value: "America/Los_Angeles"
+            - name: FTLCONF_dns_upstreams
+              value: "1.1.1.1;1.0.0.1"
+            - name: FTLCONF_dns_listeningMode
+              value: "ALL"
+            - name: FTLCONF_webserver_api_password
+              valueFrom:
+                secretKeyRef:
+                  name: pihole-secrets
+                  key: FTLCONF_webserver_api_password
+            - name: FTLCONF_dns_hosts
+              valueFrom:
+                configMapKeyRef:
+                  name: pihole-custom-hosts
+                  key: custom.list
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "128Mi"
+            limits:
+              cpu: "500m"
+              memory: "512Mi"
+          readinessProbe:
+            tcpSocket:
+              port: 80
+            initialDelaySeconds: 10
+            periodSeconds: 10
+            failureThreshold: 3
+          livenessProbe:
+            tcpSocket:
+              port: 80
+            initialDelaySeconds: 5
+            periodSeconds: 20
+            failureThreshold: 3
+          startupProbe:
+            tcpSocket:
+              port: 80
+            initialDelaySeconds: 10
+            periodSeconds: 10
+            failureThreshold: 30
+          volumeMounts:
+            - name: pihole-etc
+              mountPath: /etc/pihole
+      volumes:
+        - name: pihole-etc
+          persistentVolumeClaim:
+            claimName: pihole-etc
