@@ -7,6 +7,5 @@ allowVolumeExpansion: true
 reclaimPolicy: Retain
 volumeBindingMode: Immediate
 parameters:
-  numberOfReplicas: "2"
-  staleReplicaTimeout: "30"
+  numberOfReplicas: "1"
   diskSelector: "ssd"

@@ -9,3 +9,6 @@ spec:
   version: 1.12.0
   targetNamespace: longhorn-system
   createNamespace: true
+  valuesContent: |-
+    persistence:
+      defaultClassReplicaCount: 1
