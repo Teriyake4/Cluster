@@ -58,13 +58,13 @@ spec:
           readinessProbe:
             tcpSocket:
               port: 80
-            initialDelaySeconds: 10
+            initialDelaySeconds: 30
             periodSeconds: 10
             failureThreshold: 3
           livenessProbe:
             tcpSocket:
               port: 80
-            initialDelaySeconds: 5
+            initialDelaySeconds: 10
             periodSeconds: 20
             failureThreshold: 3
           startupProbe:
@@ -72,7 +72,7 @@ spec:
               port: 80
             initialDelaySeconds: 10
             periodSeconds: 10
-            failureThreshold: 30
+            failureThreshold: 15
           volumeMounts:
             - name: pihole-etc
               mountPath: /etc/pihole
