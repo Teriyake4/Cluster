@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
         - name: open-terminal
-          image: ghcr.io/open-webui/open-terminal
+          image: ghcr.io/open-webui/open-terminal:0.13.0
           ports:
             - containerPort: 8000
               protocol: TCP
@@ -27,9 +27,11 @@ spec:
                 secretKeyRef:
                   name: open-terminal-secrets
                   key: OPEN_TERMINAL_API_KEY
+            - name: OPEN_TERMINAL_MULTI_USER
+              value: "true"
           volumeMounts:
             - name: data
-              mountPath: /home/user
+              mountPath: /home
       volumes:
         - name: data
           persistentVolumeClaim:

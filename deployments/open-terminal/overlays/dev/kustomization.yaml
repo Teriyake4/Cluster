@@ -3,7 +3,14 @@ kind: Kustomization
 namespace: open-webui
 resources:
   - ../../base
-
+patches:
+  - target:
+      kind: PersistentVolumeClaim
+      name: open-terminal-pvc
+    patch: |-
+      - op: replace
+        path: /spec/resources/requests/storage
+        value: 1Gi
 secretGenerator:
   - name: open-terminal-secrets
     envs:

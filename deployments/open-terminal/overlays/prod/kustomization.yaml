@@ -3,7 +3,14 @@ kind: Kustomization
 namespace: open-webui
 resources:
   - ../../base
-
+patches:
+  - target:
+      kind: PersistentVolumeClaim
+      name: open-terminal-pvc
+    patch: |-
+      - op: replace
+        path: /spec/storageClassName
+        value: longhorn-ssd
 secretGenerator:
   - name: open-terminal-secrets
     envs:
