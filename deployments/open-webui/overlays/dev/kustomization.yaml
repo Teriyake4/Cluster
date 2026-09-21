@@ -101,6 +101,11 @@ patches:
               value: "true"
             - name: USER_PERMISSIONS_WORKSPACE_FOLDERS_ALLOW_SHARING
               value: "true"
+            - name: WEBUI_SECRET_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: open-webui-secrets
+                  key: WEBUI_SECRET_KEY
             - name: OPENAI_API_BASE_URL
               valueFrom:
                 secretKeyRef:
