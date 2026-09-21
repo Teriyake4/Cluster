@@ -8,6 +8,6 @@ spec:
     app: open-terminal
   ports:
     - protocol: TCP
-      port: 8000
-      targetPort: 8000
+      port: 8060
+      targetPort: 8060
   type: ClusterIP
