@@ -19,15 +19,17 @@ spec:
     spec:
       containers:
         - name: pihole
-          image: pihole/pihole:2026.07.2
+          image: pihole/pihole:2026.09.0
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 53
               protocol: UDP
               name: dns-udp
+              hostPort: 53
             - containerPort: 53
               protocol: TCP
               name: dns-tcp
+              hostPort: 53
             - containerPort: 80
               protocol: TCP
               name: web
