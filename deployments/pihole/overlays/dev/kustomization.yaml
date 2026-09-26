@@ -7,10 +7,6 @@ patches:
   - target:
       kind: PersistentVolumeClaim
       name: pihole-etc
-    patch: |-
-      - op: replace
-        path: /spec/resources/requests/storage
-        value: 250Mi
 secretGenerator:
   - name: pihole-secrets
     envs:

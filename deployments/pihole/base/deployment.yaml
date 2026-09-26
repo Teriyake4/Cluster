@@ -25,14 +25,15 @@ spec:
             - containerPort: 53
               protocol: UDP
               name: dns-udp
-              hostPort: 53
             - containerPort: 53
               protocol: TCP
               name: dns-tcp
-              hostPort: 53
             - containerPort: 80
               protocol: TCP
               name: web
+            - containerPort: 443
+              protocol: TCP
+              name: web-tls
           env:
             - name: TZ
               value: "America/Los_Angeles"
@@ -40,6 +41,8 @@ spec:
               value: "1.1.1.1;1.0.0.1"
             - name: FTLCONF_dns_listeningMode
               value: "ALL"
+            - name: FTLCONF_webserver_port
+              value: "80,443s"
             - name: FTLCONF_webserver_api_password
               valueFrom:
                 secretKeyRef:

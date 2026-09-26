@@ -13,3 +13,8 @@ spec:
       targetPort: web
       protocol: TCP
       nodePort: 30080
+    - name: web-tls
+      port: 443
+      targetPort: web-tls
+      protocol: TCP
+      nodePort: 30443

@@ -3,6 +3,7 @@ kind: Kustomization
 resources:
   - deployment.yaml
   - pvc-etc.yaml
-  - service-dns-tcp.yaml
-  - service-dns-udp.yaml
+  - service-dns.yaml
+  # - service-dns-tcp.yaml
+  # - service-dns-udp.yaml
   - service-web.yaml
