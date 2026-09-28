@@ -58,6 +58,7 @@ echo "Installing and configuring Tailscale"
 apk add tailscale tailscale-openrc
 rc-update add tailscale default
 rc-service tailscale start
+tailscale set --netfilter-mode=off
 
 echo "Authenticating Tailscale"
 tailscale up --auth-key="$TAILSCALE_AUTH_KEY"
