@@ -4,7 +4,7 @@ metadata:
   name: pihole-web
   namespace: pihole
 spec:
-  type: NodePort
+  type: ClusterIP
   selector:
     app: pihole
   ports:
@@ -12,4 +12,3 @@ spec:
       port: 80
       targetPort: web
       protocol: TCP
-      nodePort: 30080

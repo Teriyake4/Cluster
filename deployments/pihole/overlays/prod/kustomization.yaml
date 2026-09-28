@@ -18,4 +18,4 @@ secretGenerator:
 configMapGenerator:
   - name: pihole-custom-hosts
     files:
-      - custom.list
+      - wildcard.conf

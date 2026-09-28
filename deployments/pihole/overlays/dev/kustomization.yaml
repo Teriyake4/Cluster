@@ -3,10 +3,6 @@ kind: Kustomization
 namespace: pihole
 resources:
   - ../../base
-patches:
-  - target:
-      kind: PersistentVolumeClaim
-      name: pihole-etc
 secretGenerator:
   - name: pihole-secrets
     envs:
@@ -14,4 +10,4 @@ secretGenerator:
 configMapGenerator:
   - name: pihole-custom-hosts
     files:
-      - custom.list
+      - wildcard.conf

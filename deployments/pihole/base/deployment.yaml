@@ -48,11 +48,8 @@ spec:
                 secretKeyRef:
                   name: pihole-secrets
                   key: FTLCONF_webserver_api_password
-            - name: FTLCONF_dns_hosts
-              valueFrom:
-                configMapKeyRef:
-                  name: pihole-custom-hosts
-                  key: custom.list
+            - name: FTLCONF_misc_etc_dnsmasq_d
+              value: "true"
           resources:
             requests:
               cpu: "100m"
@@ -81,7 +78,14 @@ spec:
           volumeMounts:
             - name: pihole-etc
               mountPath: /etc/pihole
+            - name: pihole-dnsmasq
+              mountPath: /etc/dnsmasq.d/wildcard.conf
+              subPath: wildcard.conf
+              readOnly: true
       volumes:
         - name: pihole-etc
           persistentVolumeClaim:
             claimName: pihole-etc
+        - name: pihole-dnsmasq
+          configMap:
+            name: pihole-custom-hosts
