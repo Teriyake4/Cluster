@@ -25,6 +25,14 @@ else
     grub-mkconfig -o /boot/grub/grub.cfg
 fi
 
+USB_RULES_FILE="/etc/udev/rules.d/99-usb-realtek-power.rules"
+
+if [ -f "$USB_RULES_FILE" ]; then
+    echo "USB udev rules already configured"
+else
+    echo "ACTION==\"add\", SUBSYSTEM==\"usb\", ATTR{idVendor}==\"0bda\", ATTR{idProduct}==\"8153\", ATTR{power/control}==\"on\"" > "$USB_RULES_FILE"
+fi
+
 echo "Intstalling and setting up dhcpcd"
 apk add dhcpcd
 
