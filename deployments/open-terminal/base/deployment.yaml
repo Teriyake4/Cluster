@@ -15,11 +15,16 @@ spec:
       labels:
         app: open-terminal
     spec:
+      automountServiceAccountToken: false
       containers:
         - name: open-terminal
           image: ghcr.io/open-webui/open-terminal:0.13.0
+          args:
+            - run
+            - --port
+            - "8060"
           ports:
-            - containerPort: 8000
+            - containerPort: 8060
               protocol: TCP
           env:
             - name: OPEN_TERMINAL_API_KEY
