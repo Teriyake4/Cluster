@@ -12,3 +12,6 @@ spec:
   valuesContent: |-
     persistence:
       defaultClassReplicaCount: 1
+    defaultSettings:
+      allowCollectingLonghornUsageMetrics: false
+      nodeDownPodDeletionPolicy: delete-deployment-pod
