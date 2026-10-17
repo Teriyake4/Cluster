@@ -3,3 +3,6 @@
 nodes.txt
 wildcard.conf
 .gitignore
+
+# Open WebUI backup artifacts (produced by deployments/open-webui/scripts/backup.sh)
+deployments/open-webui/open-webui-backup-*.tar.gz
