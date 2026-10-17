@@ -5,3 +5,4 @@ resources:
   - longhorn.yaml
   - open-webui.yaml
   - pihole.yaml
+  - tailscale.yaml
