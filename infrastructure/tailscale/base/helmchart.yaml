@@ -12,7 +12,7 @@ spec:
     operatorConfig:
       hostname: k3s-tailscale-operator
       defaultTags:
-        - "tag:k8s-operator"
+        - "tag:cluster-operator"
       logging: "info"
       proxyConfig:
         defaultTags: "tag:k8s"
