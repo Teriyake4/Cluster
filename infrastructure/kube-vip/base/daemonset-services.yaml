@@ -38,6 +38,8 @@ spec:
           value: "true"
         - name: svc_leasename
           value: plndr-svcs-lock
+        - name: svc_election
+          value: "true"
         - name: vip_address
         image: ghcr.io/kube-vip/kube-vip:v1.2.4
         imagePullPolicy: IfNotPresent
