@@ -13,8 +13,6 @@ spec:
       labels:
         app: registry
     spec:
-      nodeSelector:
-        kubernetes.io/hostname: node-envy700
       containers:
       - name: registry
         image: registry:3

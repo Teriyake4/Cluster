@@ -1,0 +1,18 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: container-registry-ingress
+  namespace: container-registry
+spec:
+  ingressClassName: traefik
+  rules:
+  - host: registry-api.elmatcha.lan
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: registry
+            port:
+              number: 5000
