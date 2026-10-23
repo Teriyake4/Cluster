@@ -6,7 +6,15 @@ resources:
 generatorOptions:
   disableNameSuffixHash: true
 secretGenerator:
-  - name: operator-oauth
+  - name: core-oauth
     type: Opaque
     envs:
-      - .env
+      - .env.core
+  - name: trusted-oauth
+    type: Opaque
+    envs:
+      - .env.trusted
+  - name: guest-oauth
+    type: Opaque
+    envs:
+      - .env.guest
