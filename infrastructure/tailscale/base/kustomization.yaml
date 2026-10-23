@@ -3,4 +3,9 @@ kind: Kustomization
 namespace: tailscale
 resources:
   - helmchart.yaml
-  - connector.yaml
+  - core-connector.yaml
+  - trusted-connector.yaml
+  # - guest-connector.yaml
+  - core-tailnet.yaml
+  - trusted-tailnet.yaml
+  - guest-tailnet.yaml

@@ -1,11 +1,13 @@
 apiVersion: tailscale.com/v1alpha1
 kind: Connector
 metadata:
-  name: tailscale-connector
+  name: trusted-connector
+  namespace: tailscale
 spec:
+  tailnet: trusted
   # Tailscale device identity
   replicas: 1
-  hostnamePrefix: cluster-connector
+  hostnamePrefix: cluster-connector-trusted
   tags:
     - "tag:cluster-router"
   subnetRouter:

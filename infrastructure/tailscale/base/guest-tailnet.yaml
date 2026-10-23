@@ -1,0 +1,7 @@
+apiVersion: tailscale.com/v1alpha1
+kind: Tailnet
+metadata:
+  name: guest
+spec:
+  credentials:
+    secretName: guest-oauth

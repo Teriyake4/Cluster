@@ -1,0 +1,7 @@
+apiVersion: tailscale.com/v1alpha1
+kind: Tailnet
+metadata:
+  name: core
+spec:
+  credentials:
+    secretName: core-oauth

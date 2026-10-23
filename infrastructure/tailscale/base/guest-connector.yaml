@@ -1,0 +1,15 @@
+apiVersion: tailscale.com/v1alpha1
+kind: Connector
+metadata:
+  name: guest-connector
+  namespace: tailscale
+spec:
+  tailnet: guest
+  # Tailscale device identity
+  replicas: 2
+  hostnamePrefix: cluster-connector-guest
+  tags:
+    - "tag:cluster-router"
+  # subnetRouter:
+  #   advertiseRoutes:
+      # - "<mc server ip>/32" # Minecraft Server VIP
