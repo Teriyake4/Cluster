@@ -10,6 +10,6 @@ spec:
   hostnamePrefix: cluster-connector-guest
   tags:
     - "tag:cluster-router"
-  # subnetRouter:
-  #   advertiseRoutes:
-      # - "<mc server ip>/32" # Minecraft Server VIP
+  subnetRouter:
+    advertiseRoutes:
+      - "10.34.26.33/32" # Minecraft VIP

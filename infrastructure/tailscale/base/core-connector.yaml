@@ -14,3 +14,4 @@ spec:
     advertiseRoutes:
       - "10.34.26.31/32" # Traefik VIP
       - "10.34.26.32/32" # Pi-hole DNS VIP
+      - "10.34.26.33/32" # Minecraft VIP

@@ -6,7 +6,7 @@ metadata:
 spec:
   tailnet: trusted
   # Tailscale device identity
-  replicas: 1
+  replicas: 2
   hostnamePrefix: cluster-connector-trusted
   tags:
     - "tag:cluster-router"
@@ -14,3 +14,4 @@ spec:
     advertiseRoutes:
       - "10.34.26.31/32" # Traefik VIP
       - "10.34.26.32/32" # Pi-hole DNS VIP
+      - "10.34.26.33/32" # Minecraft VIP
