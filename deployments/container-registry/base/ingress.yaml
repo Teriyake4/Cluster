@@ -3,10 +3,26 @@ kind: Ingress
 metadata:
   name: container-registry-ingress
   namespace: container-registry
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-cloudflare
 spec:
   ingressClassName: traefik
+  tls:
+    - hosts:
+        - registry-api.elmatcha.ianchao.com
+      secretName: registry-tls
   rules:
   - host: registry-api.elmatcha.lan
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: registry
+            port:
+              number: 5000
+  - host: registry-api.elmatcha.ianchao.com
     http:
       paths:
       - path: /
