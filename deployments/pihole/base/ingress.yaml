@@ -3,10 +3,26 @@ kind: Ingress
 metadata:
   name: pihole-web-ingress
   namespace: pihole
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-cloudflare
 spec:
   ingressClassName: traefik
+  tls:
+    - hosts:
+        - pihole-ui.elmatcha.ianchao.com
+      secretName: pihole-web-tls
   rules:
     - host: pihole-ui.elmatcha.lan
+      http:
+        paths:
+        - path: /
+          pathType: Prefix
+          backend:
+            service:
+              name: pihole-web
+              port:
+                number: 80
+    - host: pihole-ui.elmatcha.ianchao.com
       http:
         paths:
         - path: /
