@@ -1,0 +1,33 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: cert-manager
+generatorOptions:
+  disableNameSuffixHash: true
+secretGenerator:
+  - name: cert-manager-secrets
+    type: Opaque
+    envs:
+      - .env
+resources:
+  - ../../base
+patches:
+  - target:
+      kind: HelmChart
+      name: cert-manager
+      namespace: cert-manager
+    patch: |-
+      apiVersion: helm.cattle.io/v1
+      kind: HelmChart
+      metadata:
+        name: cert-manager
+      spec:
+        valuesContent: |-
+          image:
+            repository: quay.io/jetstack/cert-manager-controller
+          resources:
+            requests:
+              cpu: "50m"
+              memory: "64Mi"
+            limits:
+              cpu: "200m"
+              memory: "256Mi"
