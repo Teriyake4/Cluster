@@ -1,0 +1,19 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: minecraft
+resources:
+  - ../../base
+patches:
+  - target:
+      kind: Statefulset
+      name: paper-server
+    patch: |-
+      - op: replace
+        path: /spec/volumeClaimTemplates/0/spec/storageClassName
+        value: "local-path"
+  - target:
+      kind: Service
+      name: paper-service
+    patch: |-
+      - op: remove
+        path: /metadata/annotations

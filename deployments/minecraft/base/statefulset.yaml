@@ -1,0 +1,56 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: minecraft-server
+  namespace: minecraft
+  labels:
+    app: minecraft-server
+spec:
+  serviceName: minecraft-service
+  replicas: 1
+  selector:
+    matchLabels:
+      app: minecraft-server
+  template:
+    metadata:
+      labels:
+        app: minecraft-server
+    spec:
+      securityContext:
+        runAsUser: 1001
+        runAsGroup: 1001
+        fsGroup: 1001
+        fsGroupChangePolicy: OnRootMismatch
+      containers:
+        - name: fabric
+          image: registry-api.elmatcha.ianchao.com/fabric:26.3
+          imagePullPolicy: Always
+          workingDir: /data
+          stdin: true
+          tty: true
+          ports:
+            - containerPort: 25565
+            - containerPort: 25575
+          resources:
+            requests:
+              cpu: "1000m"
+              memory: "4Gi"
+            limits:
+              cpu: "2000m"
+              memory: "7Gi"
+          volumeMounts:
+            - name: data
+              mountPath: /data
+          env:
+            - name: JAVA_OPTS
+              value: "-Xms6G -Xmx6G"
+  volumeClaimTemplates:
+    - metadata:
+        name: data
+      spec:
+        accessModes:
+          - ReadWriteOnce
+        storageClassName: "longhorn-ssd"
+        resources:
+          requests:
+            storage: 30Gi

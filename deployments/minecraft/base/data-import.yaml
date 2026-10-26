@@ -1,0 +1,28 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: data-import
+  namespace: minecraft
+  labels:
+    app: minecraft-data-import
+spec:
+  restartPolicy: Never
+  securityContext:
+    runAsUser: 1001
+    runAsGroup: 1001
+    fsGroup: 1001
+    fsGroupChangePolicy: OnRootMismatch
+  containers:
+    - name: importer
+      image: alpine:3.20
+      command:
+        - sh
+        - -c
+        - sleep 3600
+      volumeMounts:
+        - name: data
+          mountPath: /data
+  volumes:
+    - name: data
+      persistentVolumeClaim:
+        claimName: data-minecraft-server-0
