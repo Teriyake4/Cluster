@@ -4,3 +4,5 @@ resources:
   - helmchart.yaml
   - storageclass-hdd.yaml
   - storageclass-ssd.yaml
+  - longhorn-ingress.yaml
+  - longhorn-middleware.yaml

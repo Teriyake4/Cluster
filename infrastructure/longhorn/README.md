@@ -1,7 +1,32 @@
 # Longhorn
 
 ### Access Web Dashboard
-Port forward port 80, longhorn-frontend service.
+The Longhorn UI is exposed at `longhorn.elmatcha.lan` or `longhorn.elmatcha.ianchao.com` through the Traefik ingress, protected by HTTP Basic Authentication.
+
+Set up the credentials per environment (`.env` is gitignored; a
+`.env.example` template is committed under `overlays/{dev,prod}/`):
+```bash
+cd infrastructure/longhorn/overlays/prod
+cp .env.example .env
+```
+Replace the `users` value with the output of
+`htpasswd -nbB <username> '<password>'` (only the hash is stored, never the
+plaintext password).
+
+Then apply the overlay – the `secretGenerator` in the kustomization creates the
+`longhorn-basic-auth` Secret from `.env`:
+```bash
+kubectl apply -k infrastructure/longhorn/overlays/prod
+```
+
+Access <http://longhorn.elmatcha.lan> and log in with the user defined in
+`.env`. To change the password, edit `.env` and re-apply.
+
+The manifests live in `base/longhorn-ingress.yaml` (Ingress) and
+`base/longhorn-middleware.yaml` (BasicAuth Middleware).
+
+Alternatively, port forward port 80, longhorn-frontend service
+(bypasses the ingress authentication):
 ```bash
 kubectl port-forward svc/longhorn-frontend 8000:80 -n longhorn-system
 ```
