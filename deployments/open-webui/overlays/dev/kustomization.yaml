@@ -31,13 +31,7 @@ patches:
             enabled: true
             size: 2Gi
           ingress:
-            enabled: true
-            ingressClassName: traefik
-            hosts:
-              - host: dev.webui.cluster.local
-                paths:
-                  - path: /
-                    pathType: Prefix
+            enabled: false
           ollama:
             enabled: false
           extraEnvVars:
@@ -121,3 +115,24 @@ patches:
                 secretKeyRef:
                   name: open-webui-secrets
                   key: ONEDRIVE_CLIENT_ID_PERSONAL
+  - target:
+      kind: Ingress
+      name: open-webui
+      namespace: open-webui
+    patch: |-
+      apiVersion: networking.k8s.io/v1
+      kind: Ingress
+      metadata:
+        name: open-webui
+      spec:
+        rules:
+          - host: dev.webui.cluster.local
+            http:
+              paths:
+                - path: /
+                  pathType: Prefix
+                  backend:
+                    service:
+                      name: open-webui
+                      port:
+                        number: 8080

@@ -35,12 +35,6 @@ patches:
             size: 20Gi
           ingress:
             enabled: false
-            ingressClassName: traefik
-            hosts:
-              - host: ""
-                paths:
-                  - path: /
-                    pathType: Prefix
           service:
             type: LoadBalancer
             port: 8080
