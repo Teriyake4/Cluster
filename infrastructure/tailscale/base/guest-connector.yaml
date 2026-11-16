@@ -12,4 +12,5 @@ spec:
     - "tag:cluster-router"
   subnetRouter:
     advertiseRoutes:
+      - "10.34.26.32/32" # Pi-hole DNS VIP
       - "10.34.26.33/32" # Minecraft VIP

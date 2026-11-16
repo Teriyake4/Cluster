@@ -12,6 +12,7 @@ spec:
     - "tag:cluster-router"
   subnetRouter:
     advertiseRoutes:
+      - "10.34.26.30/32" # Control Plane API VIP
       - "10.34.26.31/32" # Traefik VIP
       - "10.34.26.32/32" # Pi-hole DNS VIP
       - "10.34.26.33/32" # Minecraft VIP
